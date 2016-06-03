@@ -41,10 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MaxHeap.cs" />
+    <Compile Include="MaxHeapCustomDict.cs" />
+    <Compile Include="MaxHeapDefaultDict.cs" />
     <Compile Include="MinHeapCustomDict.cs" />
     <Compile Include="MinHeap.cs" />
+    <Compile Include="Tests\MaxHeapCustomDictTest.cs" />
+    <Compile Include="Tests\MaxHeapDefaultDictTest.cs" />
+    <Compile Include="Tests\MaxHeapTest.cs" />
     <Compile Include="Tests\MinHeapTest.cs" />
-    <Compile Include="Tests\MinHeapDefaultDictTest.cs" />
     <Compile Include="MinHeapDefaultDict.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MinHeapCustomDictTest.cs" />

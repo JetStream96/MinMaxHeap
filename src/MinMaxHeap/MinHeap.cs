@@ -36,7 +36,6 @@ namespace MinMaxHeap
         public int Count
         {
             get
-
             {
                 return values.Count - 1;
             }
