@@ -1,0 +1,7 @@
+*.suo
+*.psess
+*.vsp
+
+bin/
+obj/
+src/TestResults
