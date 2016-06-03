@@ -4,16 +4,23 @@ using System.Runtime.CompilerServices;
 
 namespace MinMaxHeap
 {
-    public class MinHeap<T>
+    /// <typeparam name="TDictionary">
+    /// Maps a key to the index of the corresponding KeyValuePair 
+    /// in the list.</typeparam>
+    public class MinHeap<T, TValue, TDictionary>
+        where TDictionary : IDictionary<T, int>, new()
     {
-        List<T> values;
-        IComparer<T> comparer;
+        List<KeyValuePair<T, TValue>> values;
+        TDictionary dict;
+        IComparer<TValue> comparer;
 
-        public MinHeap(IEnumerable<T> items, IComparer<T> comparer)
+        public MinHeap(IEnumerable<KeyValuePair<T, TValue>> items,
+            IComparer<TValue> comparer)
         {
-            values = new List<T>();
+            values = new List<KeyValuePair<T, TValue>>();
+            dict = new TDictionary();
             this.comparer = comparer;
-            values.Add(default(T));
+            values.Add(new KeyValuePair<T, TValue>());
             values.AddRange(items);
 
             for (int i = values.Count / 2; i >= 1; i--)
@@ -22,15 +29,15 @@ namespace MinMaxHeap
             }
         }
 
-        public MinHeap(IEnumerable<T> items)
-            : this(items, Comparer<T>.Default)
+        public MinHeap(IEnumerable<KeyValuePair<T, TValue>> items)
+            : this(items, Comparer<TValue>.Default)
         { }
 
-        public MinHeap(IComparer<T> comparer)
-            : this(new T[0], comparer)
+        public MinHeap(IComparer<TValue> comparer)
+            : this(new KeyValuePair<T, TValue>[0], comparer)
         { }
 
-        public MinHeap() : this(Comparer<T>.Default)
+        public MinHeap() : this(Comparer<TValue>.Default)
         { }
 
         public int Count
@@ -42,7 +49,7 @@ namespace MinMaxHeap
             }
         }
 
-        public T Min
+        public KeyValuePair<T, TValue> Min
         {
             get
             {
@@ -54,7 +61,7 @@ namespace MinMaxHeap
         /// Extract the smallest element.
         /// </summary>
         /// <exception cref="InvalidOperationException"></exception>
-        public T ExtractMin()
+        public KeyValuePair<T, TValue> ExtractMin()
         {
             int count = Count;
 
@@ -69,6 +76,7 @@ namespace MinMaxHeap
 
             if (values.Count > 1)
             {
+                dict[values[1].Key] = 1;
                 bubbleDown(1);
             }
 
@@ -80,10 +88,33 @@ namespace MinMaxHeap
         /// </summary>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void Add(T item)
+        public void Add(T key, TValue val)
         {
-            values.Add(item);
+            dict.Add(key, values.Count);
+            values.Add(new KeyValuePair<T, TValue>(key, val));
             bubbleUp(Count);
+        }
+
+        /// <summary>
+        /// Modify the value corresponding to the given key.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Key is null.</exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void ChangeValue(T key, TValue newValue)
+        {
+            int index = dict[key];
+            int compareVal = comparer.Compare(newValue, values[index].Value);
+            values[index] = new KeyValuePair<T, TValue>(
+                values[index].Key, newValue);
+
+            if (compareVal > 0)
+            {
+                bubbleDown(index);
+            }
+            else if (compareVal < 0)
+            {
+                bubbleUp(index);
+            }
         }
 
         private void bubbleUp(int index)
@@ -136,10 +167,14 @@ namespace MinMaxHeap
             }
         }
 
+        // JIT compiler does not inline this method without this 
+        // attribute. Inlining gives a small (about 5%) performance
+        // increase.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int compareResult(int index1, int index2)
         {
-            return comparer.Compare(values[index1], values[index2]);
+            return comparer.Compare(
+                values[index1].Value, values[index2].Value);
         }
 
         private void exchange(int index, int max)
@@ -147,6 +182,9 @@ namespace MinMaxHeap
             var tmp = values[index];
             values[index] = values[max];
             values[max] = tmp;
+
+            dict[values[index].Key] = index;
+            dict[values[max].Key] = max;
         }
     }
 }
