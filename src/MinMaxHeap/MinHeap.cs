@@ -9,21 +9,20 @@ namespace MinMaxHeap
     public class MinHeap<TKey, TValue, TDictionary>
         where TDictionary : IDictionary<TKey, int>, new()
     {
-        List<KeyValuePair<TKey, TValue>> items;
+        List<KeyValuePair<TKey, TValue>> values;
         TDictionary dict;
         IComparer<TValue> comparer;
 
         public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items,
             IComparer<TValue> comparer)
         {
-            this.items = new List<KeyValuePair<TKey, TValue>>();
+            values = new List<KeyValuePair<TKey, TValue>>();
             dict = new TDictionary();
             this.comparer = comparer;
-            this.items.Add(new KeyValuePair<TKey, TValue>());
-            this.items.AddRange(items);
-            Count = this.items.Count - 1;
+            values.Add(new KeyValuePair<TKey, TValue>());
+            values.AddRange(items);
 
-            for (int i = this.items.Count / 2; i >= 1; i--)
+            for (int i = values.Count / 2; i >= 1; i--)
             {
                 bubbleDown(i);
             }
@@ -40,13 +39,20 @@ namespace MinMaxHeap
         public MinHeap() : this(Comparer<TValue>.Default)
         { }
 
-        public int Count { get; private set; }
+        public int Count
+        {
+            get
+
+            {
+                return values.Count - 1;
+            }
+        }
 
         public KeyValuePair<TKey, TValue> Min
         {
             get
             {
-                return items[1];
+                return values[1];
             }
         }
 
@@ -56,19 +62,20 @@ namespace MinMaxHeap
         /// <exception cref="InvalidOperationException"></exception>
         public KeyValuePair<TKey, TValue> ExtractMin()
         {
-            if (Count == 0)
+            int count = Count;
+
+            if (count == 0)
             {
                 throw new InvalidOperationException("Heap is empty.");
             }
 
             var min = Min;
-            items[1] = items[Count];
-            items.RemoveAt(Count);
-            Count--;
+            values[1] = values[count];
+            values.RemoveAt(count);
 
-            if (Count > 0)
+            if (values.Count > 1)
             {
-                dict[items[1].Key] = 1;
+                dict[values[1].Key] = 1;
                 bubbleDown(1);
             }
 
@@ -82,9 +89,8 @@ namespace MinMaxHeap
         /// <exception cref="ArgumentException"></exception>
         public void Add(TKey key, TValue val)
         {
-            dict.Add(key, Count + 1);
-            items.Add(new KeyValuePair<TKey, TValue>(key, val));
-            Count++;
+            dict.Add(key, values.Count);
+            values.Add(new KeyValuePair<TKey, TValue>(key, val));
             bubbleUp(Count);
         }
 
@@ -96,9 +102,9 @@ namespace MinMaxHeap
         public void ChangeValue(TKey key, TValue newValue)
         {
             int index = dict[key];
-            int compareVal = comparer.Compare(newValue, items[index].Value);
-            items[index] = new KeyValuePair<TKey, TValue>(
-                items[index].Key, newValue);
+            int compareVal = comparer.Compare(newValue, values[index].Value);
+            values[index] = new KeyValuePair<TKey, TValue>(
+                values[index].Key, newValue);
 
             if (compareVal > 0)
             {
@@ -116,7 +122,7 @@ namespace MinMaxHeap
 
             while (
                 index > 1 &&
-                comparer.Compare(items[parent].Value, items[index].Value) > 0)
+                comparer.Compare(values[parent].Value, values[index].Value) > 0)
             {
                 exchange(index, parent);
                 index = parent;
@@ -126,41 +132,48 @@ namespace MinMaxHeap
 
         private void bubbleDown(int index)
         {
-            int left = index * 2;
-            int right = index * 2 + 1;
             int min;
 
-            if (left < items.Count &&
-                comparer.Compare(items[left].Value, items[index].Value) < 0)
+            while (true)
             {
-                min = left;
-            }
-            else
-            {
-                min = index;
-            }
+                int left = index * 2;
+                int right = index * 2 + 1;
 
-            if (right < items.Count &&
-                comparer.Compare(items[right].Value, items[min].Value) < 0)
-            {
-                min = right;
-            }
+                if (left < values.Count &&
+                    comparer.Compare(values[left].Value, values[index].Value) < 0)
+                {
+                    min = left;
+                }
+                else
+                {
+                    min = index;
+                }
 
-            if (min != index)
-            {
-                exchange(index, min);
-                bubbleDown(min);// TODO: turn into a loop
+                if (right < values.Count &&
+                    comparer.Compare(values[right].Value, values[min].Value) < 0)
+                {
+                    min = right;
+                }
+
+                if (min != index)
+                {
+                    exchange(index, min);
+                }
+                else
+                {
+                    return;
+                }
             }
         }
 
         private void exchange(int index, int max)
         {
-            var tmp = items[index];
-            items[index] = items[max];
-            items[max] = tmp;
+            var tmp = values[index];
+            values[index] = values[max];
+            values[max] = tmp;
 
-            dict[items[index].Key] = index;
-            dict[items[max].Key] = max;
+            dict[values[index].Key] = index;
+            dict[values[max].Key] = max;
         }
     }
 }
