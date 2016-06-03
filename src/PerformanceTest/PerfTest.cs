@@ -3,7 +3,6 @@ using MinMaxHeap;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace PerformanceTest
 {

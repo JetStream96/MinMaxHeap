@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -122,7 +123,7 @@ namespace MinMaxHeap
 
             while (
                 index > 1 &&
-                comparer.Compare(values[parent].Value, values[index].Value) > 0)
+                compareResult(parent, index) > 0)
             {
                 exchange(index, parent);
                 index = parent;
@@ -140,7 +141,7 @@ namespace MinMaxHeap
                 int right = index * 2 + 1;
 
                 if (left < values.Count &&
-                    comparer.Compare(values[left].Value, values[index].Value) < 0)
+                    compareResult(left, index) < 0)
                 {
                     min = left;
                 }
@@ -150,7 +151,7 @@ namespace MinMaxHeap
                 }
 
                 if (right < values.Count &&
-                    comparer.Compare(values[right].Value, values[min].Value) < 0)
+                    compareResult(right, min) < 0)
                 {
                     min = right;
                 }
@@ -166,6 +167,13 @@ namespace MinMaxHeap
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private int compareResult(int index1, int index2)
+        {
+            return comparer.Compare(
+                values[index1].Value, values[index2].Value);
+        }
+        
         private void exchange(int index, int max)
         {
             var tmp = values[index];
