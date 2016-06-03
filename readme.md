@@ -8,6 +8,7 @@ C# implementation of min-heap and max-heap.
 * MaxHeap<T>
 * MaxHeap<TKey, TValue>
 * MaxHeap<TKey, TValue, TDictionary>
+
 ### Usage
 ```
     var heap = new MinHeap<int>();
@@ -27,7 +28,9 @@ C# implementation of min-heap and max-heap.
 
     heap.ChangeValue("item2", 1);
 ```
+
 ### Tests
 All tests can be run with NUnit 3.
+
 ### License
 This is dedicated to public domain.
