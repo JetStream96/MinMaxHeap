@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinMaxHeap;
 using System;
 using System.Collections.Generic;
@@ -6,10 +6,10 @@ using System.Diagnostics;
 
 namespace PerformanceTest
 {
-    [TestClass]
+    [TestFixture]
     public class PerfTest
     {
-        [TestMethod]
+        [Test]
         public void AddTest()
         {
             var heap = new MinHeap<int, int, Dictionary<int, int>>();
@@ -28,7 +28,7 @@ namespace PerformanceTest
                 sw.ElapsedMilliseconds);
         }
 
-        [TestMethod]
+        [Test]
         public void ExtractMinTest()
         {
             var col = new List<KeyValuePair<int, int>>();

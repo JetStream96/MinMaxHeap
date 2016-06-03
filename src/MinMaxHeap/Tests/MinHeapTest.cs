@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace MinMaxHeap.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MinHeapTest
     {
-        [TestMethod]
+        [Test]
         public void AddCollectionCorrectly()
         {
             var collection = new List<int>()
@@ -25,7 +25,7 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(15, heap.ExtractMin());
         }
 
-        [TestMethod]
+        [Test]
         public void AddCollectionAndCustomComparerCorrectOrdering()
         {
             var collection = new List<int>()
@@ -46,7 +46,7 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(1, heap.ExtractMin());
         }
 
-        [TestMethod]
+        [Test]
         public void CustomComparerCorrectOrdering()
         {
             var heap = new MinHeap<int>(
@@ -67,7 +67,7 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(1, heap.ExtractMin());
         }
 
-        [TestMethod]
+        [Test]
         public void CountTest()
         {
             var heap = new MinHeap<int>(

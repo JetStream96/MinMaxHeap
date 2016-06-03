@@ -1,13 +1,13 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MinMaxHeap.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MinHeapCustomDictTest
     {
-        [TestMethod]
+        [Test]
         public void AddCollectionCorrectly()
         {
             var collection = new List<KeyValuePair<int, int>>()
@@ -31,7 +31,7 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(15, heap.ExtractMin().Value);
         }
 
-        [TestMethod]
+        [Test]
         public void AddCollectionAndCustomComparerCorrectOrdering()
         {
             var collection = new List<KeyValuePair<int, int>>()
@@ -56,7 +56,7 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(1, heap.ExtractMin().Value);
         }
 
-        [TestMethod]
+        [Test]
         public void CustomComparerCorrectOrdering()
         {
             var heap = new MinHeap<int, int, Dictionary<int, int>>(
@@ -77,7 +77,7 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(1, heap.ExtractMin().Value);
         }
 
-        [TestMethod]
+        [Test]
         public void CountTest()
         {
             var heap = new MinHeap<int, int, Dictionary<int, int>>(
@@ -95,28 +95,28 @@ namespace MinMaxHeap.Tests
             Assert.AreEqual(1, heap.Count);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void AddSameKeyThrowException()
         {
             var heap = new MinHeap<string, double,
                 Dictionary<string, int>>();
 
             heap.Add("item1", 3.0);
-            heap.Add("item1", 4.0);
+            Assert.Throws<ArgumentException>(() =>
+                heap.Add("item1", 4.0));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void ChangeValueKeyDoesNotExist()
         {
             var heap = new MinHeap<string, int,
                 Dictionary<string, int>>();
-            
-            heap.ChangeValue("item1", 20);
+
+            Assert.Throws<KeyNotFoundException>(() =>
+                heap.ChangeValue("item1", 20));
         }
 
-        [TestMethod]
+        [Test]
         public void ChangeValueTest()
         {
             var heap = new MinHeap<string, int,

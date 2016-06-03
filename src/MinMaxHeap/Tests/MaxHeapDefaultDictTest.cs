@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace MinMaxHeap.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MaxHeapDefaultDictTest
     {
-        [TestMethod]
+        [Test]
         public void OrderIsCorrect()
         {
             var collection = new List<KeyValuePair<int, int>>()

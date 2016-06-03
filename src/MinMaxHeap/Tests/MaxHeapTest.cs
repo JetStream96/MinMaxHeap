@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace MinMaxHeap.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MaxHeapTest
     {
-        [TestMethod]
+        [Test]
         public void OrderIsCorrect()
         {
             var collection = new List<int>()
