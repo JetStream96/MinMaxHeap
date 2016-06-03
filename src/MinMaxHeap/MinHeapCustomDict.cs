@@ -7,20 +7,20 @@ namespace MinMaxHeap
     /// <typeparam name="TDictionary">
     /// Maps a key to the index of the corresponding KeyValuePair 
     /// in the list.</typeparam>
-    public class MinHeap<T, TValue, TDictionary>
-        where TDictionary : IDictionary<T, int>, new()
+    public class MinHeap<TKey, TValue, TDictionary>
+        where TDictionary : IDictionary<TKey, int>, new()
     {
-        List<KeyValuePair<T, TValue>> values;
+        List<KeyValuePair<TKey, TValue>> values;
         TDictionary dict;
         IComparer<TValue> comparer;
 
-        public MinHeap(IEnumerable<KeyValuePair<T, TValue>> items,
+        public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items,
             IComparer<TValue> comparer)
         {
-            values = new List<KeyValuePair<T, TValue>>();
+            values = new List<KeyValuePair<TKey, TValue>>();
             dict = new TDictionary();
             this.comparer = comparer;
-            values.Add(new KeyValuePair<T, TValue>());
+            values.Add(new KeyValuePair<TKey, TValue>());
             values.AddRange(items);
 
             for (int i = values.Count / 2; i >= 1; i--)
@@ -29,12 +29,12 @@ namespace MinMaxHeap
             }
         }
 
-        public MinHeap(IEnumerable<KeyValuePair<T, TValue>> items)
+        public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items)
             : this(items, Comparer<TValue>.Default)
         { }
 
         public MinHeap(IComparer<TValue> comparer)
-            : this(new KeyValuePair<T, TValue>[0], comparer)
+            : this(new KeyValuePair<TKey, TValue>[0], comparer)
         { }
 
         public MinHeap() : this(Comparer<TValue>.Default)
@@ -49,7 +49,7 @@ namespace MinMaxHeap
             }
         }
 
-        public KeyValuePair<T, TValue> Min
+        public KeyValuePair<TKey, TValue> Min
         {
             get
             {
@@ -61,7 +61,7 @@ namespace MinMaxHeap
         /// Extract the smallest element.
         /// </summary>
         /// <exception cref="InvalidOperationException"></exception>
-        public KeyValuePair<T, TValue> ExtractMin()
+        public KeyValuePair<TKey, TValue> ExtractMin()
         {
             int count = Count;
 
@@ -88,10 +88,10 @@ namespace MinMaxHeap
         /// </summary>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void Add(T key, TValue val)
+        public void Add(TKey key, TValue val)
         {
             dict.Add(key, values.Count);
-            values.Add(new KeyValuePair<T, TValue>(key, val));
+            values.Add(new KeyValuePair<TKey, TValue>(key, val));
             bubbleUp(Count);
         }
 
@@ -100,11 +100,11 @@ namespace MinMaxHeap
         /// </summary>
         /// <exception cref="ArgumentNullException">Key is null.</exception>
         /// <exception cref="KeyNotFoundException"></exception>
-        public void ChangeValue(T key, TValue newValue)
+        public void ChangeValue(TKey key, TValue newValue)
         {
             int index = dict[key];
             int compareVal = comparer.Compare(newValue, values[index].Value);
-            values[index] = new KeyValuePair<T, TValue>(
+            values[index] = new KeyValuePair<TKey, TValue>(
                 values[index].Key, newValue);
 
             if (compareVal > 0)
