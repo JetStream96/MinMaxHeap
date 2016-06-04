@@ -75,5 +75,27 @@ namespace MinMaxHeap
         {
             minHeap.ChangeValue(key, newValue);
         }
+
+        /// <summary>
+        /// Returns whether the key exists.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        public bool ContainsKey(TKey key)
+        {
+            return minHeap.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Gets the KeyValuePair correspoinding to the given key.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public KeyValuePair<TKey, TValue> this[TKey key]
+        {
+            get
+            {
+                return minHeap[key];
+            }
+        }
     }
 }

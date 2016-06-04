@@ -20,13 +20,8 @@ namespace MinMaxHeap
             values = new List<KeyValuePair<TKey, TValue>>();
             indexInList = new TDictionary();
             this.comparer = comparer;
-            values.Add(new KeyValuePair<TKey, TValue>());
-            values.AddRange(items);
-
-            for (int i = values.Count / 2; i >= 1; i--)
-            {
-                bubbleDown(i);
-            }
+            values.Add(default(KeyValuePair<TKey, TValue>));
+            addItems(items);
         }
 
         public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items)
@@ -72,6 +67,7 @@ namespace MinMaxHeap
             var min = Min;
             values[1] = values[count];
             values.RemoveAt(count);
+            indexInList.Remove(min.Key);
 
             if (values.Count > 1)
             {
@@ -117,6 +113,28 @@ namespace MinMaxHeap
             }
         }
 
+        /// <summary>
+        /// Returns whether the key exists.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        public bool ContainsKey(TKey key)
+        {
+            return indexInList.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Gets the KeyValuePair correspoinding to the given key.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public KeyValuePair<TKey, TValue> this[TKey key]
+        {
+            get
+            {
+                return values[indexInList[key]];
+            }
+        }
+
         private void bubbleUp(int index)
         {
             int parent = index / 2;
@@ -159,6 +177,7 @@ namespace MinMaxHeap
                 if (min != index)
                 {
                     exchange(index, min);
+                    index = min;
                 }
                 else
                 {
@@ -185,6 +204,23 @@ namespace MinMaxHeap
 
             indexInList[values[index].Key] = index;
             indexInList[values[max].Key] = max;
+        }
+
+        private void addItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
+        {
+            int index = values.Count;
+
+            foreach (var i in items)
+            {
+                values.Add(i);
+                indexInList.Add(i.Key, index);
+                index++;
+            }
+
+            for (int i = values.Count / 2; i >= 1; i--)
+            {
+                bubbleDown(i);
+            }
         }
     }
 }

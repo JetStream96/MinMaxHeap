@@ -140,5 +140,50 @@ namespace UnitTest
             Assert.AreEqual(10, heap.ExtractMin().Value);
             Assert.AreEqual(20, heap.ExtractMin().Value);
         }
+
+        [Test]
+        public void KeyRemovedAfterExtractMin()
+        {
+            var heap = new MinHeap<string, int,
+               Dictionary<string, int>>();
+
+            heap.Add("item1", 3);
+            heap.ExtractMin();
+
+            Assert.IsFalse(heap.ContainsKey("item1"));
+        }
+
+        [Test]
+        public void ContainsKeyTest()
+        {
+            var heap = new MinHeap<string, int,
+                Dictionary<string, int>>();
+
+            heap.Add("item1", 3);
+            heap.Add("item2", 4);
+            heap.Add("item3", 8);
+
+            Assert.IsTrue(heap.ContainsKey("item2"));
+            Assert.IsFalse(heap.ContainsKey("item4"));
+            Assert.Throws<ArgumentNullException>(() =>
+            heap.ContainsKey(null));
+        }
+
+        [Test]
+        public void IndexerTest()
+        {
+            var heap = new MinHeap<string, int,
+                Dictionary<string, int>>();
+
+            heap.Add("item1", 3);
+            heap.Add("item2", 4);
+            heap.Add("item3", 8);
+
+            Assert.AreEqual(new KeyValuePair<string, int>("item3", 8),
+                heap["item3"]);
+
+            Assert.Throws<KeyNotFoundException>(() =>
+            heap["item5"].ToString());
+        }
     }
 }
