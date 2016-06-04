@@ -11,7 +11,7 @@ C# implementation of min-heap and max-heap.
 
 ### Usage
 ```c#
-    var heap = new MinHeap&lt;int&gt;();
+    var heap = new MinHeap<int>();
     heap.Add(3);
     heap.Add(9);
     
@@ -20,8 +20,8 @@ C# implementation of min-heap and max-heap.
 ```
 
 ```c#
-    var heap = new MinHeap&lt;string, int,
-                Dictionary&lt;string, int&gt;&gt;();
+    var heap = new MinHeap<string, int,
+                Dictionary<string, int>>();
 
     heap.Add("item1", 3);
     heap.Add("item2", 4);
