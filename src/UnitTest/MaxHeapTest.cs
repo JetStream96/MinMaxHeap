@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
+﻿using MinMaxHeap;
+using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace MinMaxHeap.Tests
+namespace UnitTest
 {
     [TestFixture]
     public class MaxHeapTest

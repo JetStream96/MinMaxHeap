@@ -11,14 +11,14 @@ namespace MinMaxHeap
         where TDictionary : IDictionary<TKey, int>, new()
     {
         List<KeyValuePair<TKey, TValue>> values;
-        TDictionary dict;
+        TDictionary indexInList;
         IComparer<TValue> comparer;
 
         public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items,
             IComparer<TValue> comparer)
         {
             values = new List<KeyValuePair<TKey, TValue>>();
-            dict = new TDictionary();
+            indexInList = new TDictionary();
             this.comparer = comparer;
             values.Add(new KeyValuePair<TKey, TValue>());
             values.AddRange(items);
@@ -75,7 +75,7 @@ namespace MinMaxHeap
 
             if (values.Count > 1)
             {
-                dict[values[1].Key] = 1;
+                indexInList[values[1].Key] = 1;
                 bubbleDown(1);
             }
 
@@ -89,9 +89,10 @@ namespace MinMaxHeap
         /// <exception cref="ArgumentException"></exception>
         public void Add(TKey key, TValue val)
         {
-            dict.Add(key, values.Count);
+            int count = values.Count;
+            indexInList.Add(key, count);
             values.Add(new KeyValuePair<TKey, TValue>(key, val));
-            bubbleUp(Count);
+            bubbleUp(count);
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace MinMaxHeap
         /// <exception cref="KeyNotFoundException"></exception>
         public void ChangeValue(TKey key, TValue newValue)
         {
-            int index = dict[key];
+            int index = indexInList[key];
             int compareVal = comparer.Compare(newValue, values[index].Value);
             values[index] = new KeyValuePair<TKey, TValue>(
                 values[index].Key, newValue);
@@ -126,7 +127,7 @@ namespace MinMaxHeap
             {
                 exchange(index, parent);
                 index = parent;
-                parent = index / 2;
+                parent /= 2;
             }
         }
 
@@ -182,8 +183,8 @@ namespace MinMaxHeap
             values[index] = values[max];
             values[max] = tmp;
 
-            dict[values[index].Key] = index;
-            dict[values[max].Key] = max;
+            indexInList[values[index].Key] = index;
+            indexInList[values[max].Key] = max;
         }
     }
 }

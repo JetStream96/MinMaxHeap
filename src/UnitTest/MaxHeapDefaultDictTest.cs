@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using MinMaxHeap;
 using NUnit.Framework;
+using System.Collections.Generic;
 
-namespace MinMaxHeap.Tests
+namespace UnitTest
 {
     [TestFixture]
-    public class MaxHeapCustomDictTest
+    public class MaxHeapDefaultDictTest
     {
         [Test]
         public void OrderIsCorrect()
@@ -18,7 +19,7 @@ namespace MinMaxHeap.Tests
                 new KeyValuePair<int, int>(2, 2)
             };
 
-            var heap = new MaxHeap<int, int, Dictionary<int, int>>(
+            var heap = new MaxHeap<int, int>(
                 collection);
 
             Assert.AreEqual(5, heap.Count);
