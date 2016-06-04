@@ -2,16 +2,16 @@
 C# implementation of min-heap and max-heap.
 
 ### Classes
-* MinHeap<T>
-* MinHeap<TKey, TValue>
-* MinHeap<TKey, TValue, TDictionary>
-* MaxHeap<T>
-* MaxHeap<TKey, TValue>
-* MaxHeap<TKey, TValue, TDictionary>
+* MinHeap&lt;T&gt;
+* MinHeap&lt;TKey, TValue&gt;
+* MinHeap&lt;TKey, TValue, TDictionary&gt;
+* MaxHeap&lt;T&gt;
+* MaxHeap&lt;TKey, TValue&gt;
+* MaxHeap&lt;TKey, TValue, TDictionary&gt;
 
 ### Usage
-```
-    var heap = new MinHeap<int>();
+```c#
+    var heap = new MinHeap&lt;int&gt;();
     heap.Add(3);
     heap.Add(9);
     
@@ -19,9 +19,9 @@ C# implementation of min-heap and max-heap.
     int num = heap.Count;
 ```
 
-```
-    var heap = new MinHeap<string, int,
-                Dictionary<string, int>>();
+```c#
+    var heap = new MinHeap&lt;string, int,
+                Dictionary&lt;string, int&gt;&gt;();
 
     heap.Add("item1", 3);
     heap.Add("item2", 4);
