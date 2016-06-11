@@ -95,7 +95,7 @@ namespace MinMaxHeap
             {
                 exchange(index, parent);
                 index = parent;
-                parent = index / 2;
+                parent /= 2;
             }
         }
 
@@ -127,6 +127,7 @@ namespace MinMaxHeap
                 if (min != index)
                 {
                     exchange(index, min);
+                    index = min;
                 }
                 else
                 {

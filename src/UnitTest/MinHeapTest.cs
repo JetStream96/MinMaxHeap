@@ -1,6 +1,7 @@
 ﻿using MinMaxHeap;
 using NUnit.Framework;
 using System.Collections.Generic;
+using static UnitTest.Common;
 
 namespace UnitTest
 {
@@ -18,12 +19,7 @@ namespace UnitTest
             var heap = new MinHeap<int>(collection);
 
             Assert.AreEqual(5, heap.Count);
-
-            Assert.AreEqual(1, heap.ExtractMin());
-            Assert.AreEqual(2, heap.ExtractMin());
-            Assert.AreEqual(3, heap.ExtractMin());
-            Assert.AreEqual(9, heap.ExtractMin());
-            Assert.AreEqual(15, heap.ExtractMin());
+            verifyHeapProperty(heap);
         }
 
         [Test]
@@ -39,12 +35,7 @@ namespace UnitTest
                 Comparer<int>.Create((x, y) => -x.CompareTo(y)));
 
             Assert.AreEqual(5, heap.Count);
-
-            Assert.AreEqual(15, heap.ExtractMin());
-            Assert.AreEqual(9, heap.ExtractMin());
-            Assert.AreEqual(3, heap.ExtractMin());
-            Assert.AreEqual(2, heap.ExtractMin());
-            Assert.AreEqual(1, heap.ExtractMin());
+            verifyHeapProperty(heap);
         }
 
         [Test]
@@ -60,12 +51,7 @@ namespace UnitTest
             heap.Add(2);
 
             Assert.AreEqual(5, heap.Count);
-
-            Assert.AreEqual(15, heap.ExtractMin());
-            Assert.AreEqual(9, heap.ExtractMin());
-            Assert.AreEqual(3, heap.ExtractMin());
-            Assert.AreEqual(2, heap.ExtractMin());
-            Assert.AreEqual(1, heap.ExtractMin());
+            verifyHeapProperty(heap);
         }
 
         [Test]
@@ -84,6 +70,47 @@ namespace UnitTest
             heap.ExtractMin();
 
             Assert.AreEqual(1, heap.Count);
-        }        
+        }
+
+        [Test]
+        public void ExtractMinTest()
+        {
+            var collection = new List<int>()
+            {
+                3, 1, 9, 15, 2
+            };
+
+            var heap = new MinHeap<int>(collection);
+
+            Assert.AreEqual(5, heap.Count);
+
+            Assert.AreEqual(1, heap.ExtractMin());
+            Assert.AreEqual(2, heap.ExtractMin());
+            Assert.AreEqual(3, heap.ExtractMin());
+            Assert.AreEqual(9, heap.ExtractMin());
+            Assert.AreEqual(15, heap.ExtractMin());
+        }
+
+        private void verifyHeapProperty<T>(
+            MinHeap<T> heap)
+        {
+            var list = GetField<List<T>>(heap, "values");
+            var comparer = GetField<IComparer<T>>(heap, "comparer");
+
+            for (int i = 1; i <= list.Count / 2; i++)
+            {
+                if (i * 2 < list.Count)
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(list[i], list[i * 2]) <= 0);
+                }
+
+                if (i * 2 + 1 < list.Count)
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(list[i], list[i * 2 + 1]) <= 0);
+                }
+            }
+        }
     }
 }

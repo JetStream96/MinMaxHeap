@@ -187,7 +187,7 @@ namespace MinMaxHeap
         }
 
         // JIT compiler does not inline this method without this 
-        // attribute. Inlining gives a small (about 5%) performance
+        // attribute. Inlining gives a small performance
         // increase.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int compareResult(int index1, int index2)

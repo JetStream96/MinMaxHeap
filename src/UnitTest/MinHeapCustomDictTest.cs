@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using static UnitTest.Common;
 
 namespace UnitTest
 {
@@ -17,19 +18,18 @@ namespace UnitTest
                 new KeyValuePair<int, int>(1, 1),
                 new KeyValuePair<int, int>(9, 9),
                 new KeyValuePair<int, int>(15, 15),
-                new KeyValuePair<int, int>(2, 2)
+                new KeyValuePair<int, int>(2, 2),
+                new KeyValuePair<int, int>(12, 12),
+                new KeyValuePair<int, int>(6, 6),
+                new KeyValuePair<int, int>(-2, -2),
+                new KeyValuePair<int, int>(0, 0),
             };
 
             var heap = new MinHeap<int, int, Dictionary<int, int>>(
                 collection);
 
-            Assert.AreEqual(5, heap.Count);
-
-            Assert.AreEqual(1, heap.ExtractMin().Value);
-            Assert.AreEqual(2, heap.ExtractMin().Value);
-            Assert.AreEqual(3, heap.ExtractMin().Value);
-            Assert.AreEqual(9, heap.ExtractMin().Value);
-            Assert.AreEqual(15, heap.ExtractMin().Value);
+            Assert.AreEqual(9, heap.Count);
+            verifyHeapProperty(heap);
         }
 
         [Test]
@@ -49,12 +49,7 @@ namespace UnitTest
                 Comparer<int>.Create((x, y) => -x.CompareTo(y)));
 
             Assert.AreEqual(5, heap.Count);
-
-            Assert.AreEqual(15, heap.ExtractMin().Value);
-            Assert.AreEqual(9, heap.ExtractMin().Value);
-            Assert.AreEqual(3, heap.ExtractMin().Value);
-            Assert.AreEqual(2, heap.ExtractMin().Value);
-            Assert.AreEqual(1, heap.ExtractMin().Value);
+            verifyHeapProperty(heap);
         }
 
         [Test]
@@ -70,12 +65,7 @@ namespace UnitTest
             heap.Add(2, 2);
 
             Assert.AreEqual(5, heap.Count);
-
-            Assert.AreEqual(15, heap.ExtractMin().Value);
-            Assert.AreEqual(9, heap.ExtractMin().Value);
-            Assert.AreEqual(3, heap.ExtractMin().Value);
-            Assert.AreEqual(2, heap.ExtractMin().Value);
-            Assert.AreEqual(1, heap.ExtractMin().Value);
+            verifyHeapProperty(heap);
         }
 
         [Test]
@@ -105,6 +95,30 @@ namespace UnitTest
             heap.Add("item1", 3.0);
             Assert.Throws<ArgumentException>(() =>
                 heap.Add("item1", 4.0));
+        }
+
+        [Test]
+        public void ExtractTest()
+        {
+            var collection = new List<KeyValuePair<int, int>>()
+            {
+                new KeyValuePair<int, int>(3, 3),
+                new KeyValuePair<int, int>(1, 1),
+                new KeyValuePair<int, int>(9, 9),
+                new KeyValuePair<int, int>(15, 15),
+                new KeyValuePair<int, int>(2, 2)
+            };
+
+            var heap = new MinHeap<int, int, Dictionary<int, int>>(
+                collection);
+
+            Assert.AreEqual(5, heap.Count);
+
+            Assert.AreEqual(1, heap.ExtractMin().Value);
+            Assert.AreEqual(2, heap.ExtractMin().Value);
+            Assert.AreEqual(3, heap.ExtractMin().Value);
+            Assert.AreEqual(9, heap.ExtractMin().Value);
+            Assert.AreEqual(15, heap.ExtractMin().Value);
         }
 
         [Test]
@@ -185,5 +199,30 @@ namespace UnitTest
             Assert.Throws<KeyNotFoundException>(() =>
             heap["item5"].ToString());
         }
+        
+        // Used for testing
+        private void verifyHeapProperty<TKey, TValue, TDictionary>(
+            MinHeap<TKey, TValue, TDictionary> heap)
+            where TDictionary : IDictionary<TKey, int>, new()
+        {
+            var list = GetField<List<KeyValuePair<TKey, TValue>>>(heap, "values");
+            var comparer = GetField<IComparer<TValue>>(heap, "comparer");
+
+            for (int i = 1; i <= list.Count / 2; i++)
+            {
+                if (i * 2 < list.Count)
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(list[i].Value, list[i * 2].Value) <= 0);
+                }
+
+                if (i * 2 + 1 < list.Count)
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(list[i].Value, list[i * 2 + 1].Value) <= 0);
+                }
+            }
+        }
+
     }
 }

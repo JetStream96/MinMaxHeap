@@ -51,6 +51,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Common.cs" />
     <Compile Include="MaxHeapCustomDictTest.cs" />
     <Compile Include="MaxHeapDefaultDictTest.cs" />
     <Compile Include="MaxHeapTest.cs" />
