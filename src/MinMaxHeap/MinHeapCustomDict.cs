@@ -21,7 +21,7 @@ namespace MinMaxHeap
             indexInList = new TDictionary();
             this.comparer = comparer;
             values.Add(default(KeyValuePair<TKey, TValue>));
-            addItems(items);
+            AddItems(items);
         }
 
         public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items)
@@ -72,7 +72,7 @@ namespace MinMaxHeap
             if (values.Count > 1)
             {
                 indexInList[values[1].Key] = 1;
-                bubbleDown(1);
+                BubbleDown(1);
             }
 
             return min;
@@ -88,7 +88,7 @@ namespace MinMaxHeap
             int count = values.Count;
             indexInList.Add(key, count);
             values.Add(new KeyValuePair<TKey, TValue>(key, val));
-            bubbleUp(count);
+            BubbleUp(count);
         }
 
         /// <summary>
@@ -105,11 +105,11 @@ namespace MinMaxHeap
 
             if (compareVal > 0)
             {
-                bubbleDown(index);
+                BubbleDown(index);
             }
             else if (compareVal < 0)
             {
-                bubbleUp(index);
+                BubbleUp(index);
             }
         }
 
@@ -135,21 +135,21 @@ namespace MinMaxHeap
             }
         }
 
-        private void bubbleUp(int index)
+        private void BubbleUp(int index)
         {
             int parent = index / 2;
 
             while (
                 index > 1 &&
-                compareResult(parent, index) > 0)
+                CompareResult(parent, index) > 0)
             {
-                exchange(index, parent);
+                Exchange(index, parent);
                 index = parent;
                 parent /= 2;
             }
         }
 
-        private void bubbleDown(int index)
+        private void BubbleDown(int index)
         {
             int min;
 
@@ -159,7 +159,7 @@ namespace MinMaxHeap
                 int right = index * 2 + 1;
 
                 if (left < values.Count &&
-                    compareResult(left, index) < 0)
+                    CompareResult(left, index) < 0)
                 {
                     min = left;
                 }
@@ -169,14 +169,14 @@ namespace MinMaxHeap
                 }
 
                 if (right < values.Count &&
-                    compareResult(right, min) < 0)
+                    CompareResult(right, min) < 0)
                 {
                     min = right;
                 }
 
                 if (min != index)
                 {
-                    exchange(index, min);
+                    Exchange(index, min);
                     index = min;
                 }
                 else
@@ -190,13 +190,13 @@ namespace MinMaxHeap
         // attribute. Inlining gives a small performance
         // increase.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int compareResult(int index1, int index2)
+        private int CompareResult(int index1, int index2)
         {
             return comparer.Compare(
                 values[index1].Value, values[index2].Value);
         }
 
-        private void exchange(int index, int max)
+        private void Exchange(int index, int max)
         {
             var tmp = values[index];
             values[index] = values[max];
@@ -206,7 +206,7 @@ namespace MinMaxHeap
             indexInList[values[max].Key] = max;
         }
 
-        private void addItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
+        private void AddItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             int index = values.Count;
 
@@ -219,7 +219,7 @@ namespace MinMaxHeap
 
             for (int i = values.Count / 2; i >= 1; i--)
             {
-                bubbleDown(i);
+                BubbleDown(i);
             }
         }
     }

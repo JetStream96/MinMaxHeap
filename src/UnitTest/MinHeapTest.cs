@@ -19,7 +19,7 @@ namespace UnitTest
             var heap = new MinHeap<int>(collection);
 
             Assert.AreEqual(5, heap.Count);
-            verifyHeapProperty(heap);
+            VerifyHeapProperty(heap);
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace UnitTest
                 Comparer<int>.Create((x, y) => -x.CompareTo(y)));
 
             Assert.AreEqual(5, heap.Count);
-            verifyHeapProperty(heap);
+            VerifyHeapProperty(heap);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace UnitTest
             heap.Add(2);
 
             Assert.AreEqual(5, heap.Count);
-            verifyHeapProperty(heap);
+            VerifyHeapProperty(heap);
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace UnitTest
             Assert.AreEqual(15, heap.ExtractMin());
         }
 
-        private void verifyHeapProperty<T>(
+        private void VerifyHeapProperty<T>(
             MinHeap<T> heap)
         {
             var list = GetField<List<T>>(heap, "values");

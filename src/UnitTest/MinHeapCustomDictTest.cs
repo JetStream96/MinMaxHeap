@@ -29,7 +29,7 @@ namespace UnitTest
                 collection);
 
             Assert.AreEqual(9, heap.Count);
-            verifyHeapProperty(heap);
+            VerifyHeapProperty(heap);
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace UnitTest
                 Comparer<int>.Create((x, y) => -x.CompareTo(y)));
 
             Assert.AreEqual(5, heap.Count);
-            verifyHeapProperty(heap);
+            VerifyHeapProperty(heap);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace UnitTest
             heap.Add(2, 2);
 
             Assert.AreEqual(5, heap.Count);
-            verifyHeapProperty(heap);
+            VerifyHeapProperty(heap);
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace UnitTest
         }
         
         // Used for testing
-        private void verifyHeapProperty<TKey, TValue, TDictionary>(
+        private void VerifyHeapProperty<TKey, TValue, TDictionary>(
             MinHeap<TKey, TValue, TDictionary> heap)
             where TDictionary : IDictionary<TKey, int>, new()
         {
