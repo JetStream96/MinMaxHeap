@@ -15,22 +15,21 @@ C# implementation of min-heap and max-heap.
     heap.Add(3);
     heap.Add(9);
     
-    int elem = heap.ExtractMin();
-    int num = heap.Count;
+    int elem = heap.ExtractMin();  // Returns 3
+    int num = heap.Count;		   // Returns 1
 ```
 
 ```c#
-    var heap = new MinHeap<string, int,
-                Dictionary<string, int>>();
+    var heap = new MinHeap<string, int, Dictionary<string, int>>();
 
     heap.Add("item1", 3);
     heap.Add("item2", 4);
 
-    heap.ChangeValue("item2", 1);
+    heap.ChangeValue("item2", 1);   // Now value of "item2" is 1.
 ```
 
 ### Tests
 All tests can be run with NUnit 3.
 
 ### License
-This is dedicated to public domain.
+Public domain.

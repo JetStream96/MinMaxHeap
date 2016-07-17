@@ -75,7 +75,7 @@ namespace MinMaxHeap
         }
 
         /// <summary>
-        /// Insert the key and value.
+        /// Insert the value.
         /// </summary>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
