@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MinMaxHeap
 {
     // A wrapper of MinHeap<TKey, TValue, TDictionary>.
     // Uses Dictionary<TKey, int> as TDictionary.
     //
-    public class MinHeap<TKey, TValue>
+    public class MinHeap<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         private MinHeap<TKey, TValue, Dictionary<TKey, int>> heap;
 
-        public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items,
-            IComparer<TValue> comparer)
+        public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items, IComparer<TValue> comparer)
         {
-            heap = new MinHeap<TKey, TValue, Dictionary<TKey, int>>(
-                items, comparer);
+            heap = new MinHeap<TKey, TValue, Dictionary<TKey, int>>(items, comparer);
         }
 
         public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items)
@@ -27,21 +27,16 @@ namespace MinMaxHeap
         public MinHeap() : this(Comparer<TValue>.Default)
         { }
 
-        public int Count
-        {
-            get
-            {
-                return heap.Count;
-            }
-        }
+        public int Count => heap.Count;
 
-        public KeyValuePair<TKey, TValue> Min
-        {
-            get
-            {
-                return heap.Min;
-            }
-        }
+        public KeyValuePair<TKey, TValue> Min => heap.Min;
+
+        public IEnumerable<TKey> Keys => heap.Keys;
+
+        public IEnumerable<TValue> Values => heap.Values;
+
+        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key] =>
+            ((IReadOnlyDictionary<TKey, TValue>)heap)[key];
 
         /// <summary>
         /// Extract the smallest element.
@@ -81,17 +76,26 @@ namespace MinMaxHeap
             return heap.ContainsKey(key);
         }
 
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            return heap.TryGetValue(key, out value);
+        }
+
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
+            return heap.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         /// <summary>
         /// Gets the KeyValuePair correspoinding to the given key.
         /// </summary>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="KeyNotFoundException"></exception>
-        public KeyValuePair<TKey, TValue> this[TKey key]
-        {
-            get
-            {
-                return heap[key];
-            }
-        }
+        public KeyValuePair<TKey, TValue> this[TKey key] => heap[key];
     }
 }

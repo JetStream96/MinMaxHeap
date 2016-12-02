@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace MinMaxHeap
@@ -7,12 +9,12 @@ namespace MinMaxHeap
     /// <typeparam name="TDictionary">
     /// Maps a key to the index of the corresponding KeyValuePair 
     /// in the list.</typeparam>
-    public class MinHeap<TKey, TValue, TDictionary>
+    public class MinHeap<TKey, TValue, TDictionary> : IReadOnlyDictionary<TKey, TValue>
         where TDictionary : IDictionary<TKey, int>, new()
     {
-        List<KeyValuePair<TKey, TValue>> values;
-        TDictionary indexInList;
-        IComparer<TValue> comparer;
+        private List<KeyValuePair<TKey, TValue>> values;
+        private TDictionary indexInList;
+        private IComparer<TValue> comparer;
 
         public MinHeap(IEnumerable<KeyValuePair<TKey, TValue>> items,
             IComparer<TValue> comparer)
@@ -35,21 +37,15 @@ namespace MinMaxHeap
         public MinHeap() : this(Comparer<TValue>.Default)
         { }
 
-        public int Count
-        {
-            get
-            {
-                return values.Count - 1;
-            }
-        }
+        public int Count => values.Count - 1;
 
-        public KeyValuePair<TKey, TValue> Min
-        {
-            get
-            {
-                return values[1];
-            }
-        }
+        public KeyValuePair<TKey, TValue> Min => values[1];
+
+        public IEnumerable<TKey> Keys => indexInList.Keys;
+
+        public IEnumerable<TValue> Values => values.Select(kv => kv.Value);
+
+        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key] => this[key].Value;
 
         /// <summary>
         /// Extract the smallest element.
@@ -127,21 +123,13 @@ namespace MinMaxHeap
         /// </summary>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="KeyNotFoundException"></exception>
-        public KeyValuePair<TKey, TValue> this[TKey key]
-        {
-            get
-            {
-                return values[indexInList[key]];
-            }
-        }
+        public KeyValuePair<TKey, TValue> this[TKey key] => values[indexInList[key]];
 
         private void BubbleUp(int index)
         {
             int parent = index / 2;
 
-            while (
-                index > 1 &&
-                CompareResult(parent, index) > 0)
+            while (index > 1 && CompareResult(parent, index) > 0)
             {
                 Exchange(index, parent);
                 index = parent;
@@ -192,8 +180,7 @@ namespace MinMaxHeap
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private int CompareResult(int index1, int index2)
         {
-            return comparer.Compare(
-                values[index1].Value, values[index2].Value);
+            return comparer.Compare(values[index1].Value, values[index2].Value);
         }
 
         private void Exchange(int index, int max)
@@ -222,5 +209,22 @@ namespace MinMaxHeap
                 BubbleDown(i);
             }
         }
+
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            int index;
+            if (indexInList.TryGetValue(key, out index))
+            {
+                value = values[index].Value;
+                return true;
+            }
+
+            value = default(TValue);
+            return false;
+        }
+
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => values.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

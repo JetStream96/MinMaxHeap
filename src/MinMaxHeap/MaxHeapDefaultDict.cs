@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MinMaxHeap
 {
     // A wrapper of MaxHeap<TKey, TValue, TDictionary>.
     // Uses Dictionary<TKey, int> as TDictionary.
     //
-    public class MaxHeap<TKey, TValue>
+    public class MaxHeap<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     {
         private MaxHeap<TKey, TValue, Dictionary<TKey, int>> heap;
 
@@ -27,21 +29,16 @@ namespace MinMaxHeap
         public MaxHeap() : this(Comparer<TValue>.Default)
         { }
 
-        public int Count
-        {
-            get
-            {
-                return heap.Count;
-            }
-        }
+        public int Count => heap.Count;
 
-        public KeyValuePair<TKey, TValue> Max
-        {
-            get
-            {
-                return heap.Max;
-            }
-        }
+        public KeyValuePair<TKey, TValue> Max => heap.Max;
+
+        public IEnumerable<TKey> Keys => heap.Keys;
+
+        public IEnumerable<TValue> Values => heap.Values;
+
+        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key] =>
+            ((IReadOnlyDictionary<TKey, TValue>)heap)[key];
 
         /// <summary>
         /// Extract the largest element.
@@ -81,17 +78,20 @@ namespace MinMaxHeap
             return heap.ContainsKey(key);
         }
 
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            return heap.TryGetValue(key, out value);
+        }
+
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => heap.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
         /// <summary>
         /// Gets the KeyValuePair correspoinding to the given key.
         /// </summary>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="KeyNotFoundException"></exception>
-        public KeyValuePair<TKey, TValue> this[TKey key]
-        {
-            get
-            {
-                return heap[key];
-            }
-        }
+        public KeyValuePair<TKey, TValue> this[TKey key] => heap[key];
     }
 }
