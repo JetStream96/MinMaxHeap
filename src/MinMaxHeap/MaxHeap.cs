@@ -4,7 +4,7 @@ namespace MinMaxHeap
 {
     public class MaxHeap<T>
     {
-        MinHeap<T> minHeap;
+        private MinHeap<T> minHeap;
 
         public MaxHeap(IEnumerable<T> items, IComparer<T> comparer)
         {
@@ -25,21 +25,9 @@ namespace MinMaxHeap
         public MaxHeap() : this(Comparer<T>.Default)
         { }
 
-        public int Count
-        {
-            get
-            {
-                return minHeap.Count;
-            }
-        }
+        public int Count => minHeap.Count;
 
-        public T Max
-        {
-            get
-            {
-                return minHeap.Min;
-            }
-        }
+        public T Max => minHeap.Min;
 
         /// <summary>
         /// Extract the largest element.

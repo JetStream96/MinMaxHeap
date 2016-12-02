@@ -6,8 +6,8 @@ namespace MinMaxHeap
 {
     public class MinHeap<T>
     {
-        List<T> values;
-        IComparer<T> comparer;
+        private List<T> values;
+        private IComparer<T> comparer;
 
         public MinHeap(IEnumerable<T> items, IComparer<T> comparer)
         {
@@ -33,21 +33,9 @@ namespace MinMaxHeap
         public MinHeap() : this(Comparer<T>.Default)
         { }
 
-        public int Count
-        {
-            get
-            {
-                return values.Count - 1;
-            }
-        }
+        public int Count => values.Count - 1;
 
-        public T Min
-        {
-            get
-            {
-                return values[1];
-            }
-        }
+        public T Min => values[1];
 
         /// <summary>
         /// Extract the smallest element.
@@ -89,9 +77,7 @@ namespace MinMaxHeap
         {
             int parent = index / 2;
 
-            while (
-                index > 1 &&
-                CompareResult(parent, index) > 0)
+            while (index > 1 && CompareResult(parent, index) > 0)
             {
                 Exchange(index, parent);
                 index = parent;
