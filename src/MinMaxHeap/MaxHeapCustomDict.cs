@@ -27,8 +27,7 @@ namespace MinMaxHeap
             : this(new KeyValuePair<TKey, TValue>[0], comparer)
         { }
 
-        public MaxHeap() : this(Comparer<TValue>.Default)
-        { }
+        public MaxHeap() : this(Comparer<TValue>.Default) { }
 
         public int Count => minHeap.Count;
 

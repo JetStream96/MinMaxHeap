@@ -1,4 +1,5 @@
-﻿using MinMaxHeap;
+﻿using System;
+using MinMaxHeap;
 using NUnit.Framework;
 using System.Collections.Generic;
 using static UnitTest.Common;
@@ -108,6 +109,13 @@ namespace UnitTest
             heap.ExtractMin();
 
             Assert.IsTrue(heap.SetEquals(new[] { 2, 3, 5, 9, 15 }));
+        }
+
+        [Test]
+        public void EmptyHeapShouldThrow()
+        {
+            var heap = new MinHeap<int>();
+            Assert.Throws<InvalidOperationException>(() => heap.ExtractMin());
         }
     }
 }
