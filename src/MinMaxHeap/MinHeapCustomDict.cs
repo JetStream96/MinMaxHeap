@@ -45,7 +45,12 @@ namespace MinMaxHeap
 
         public IEnumerable<TValue> Values => values.Select(kv => kv.Value);
 
-        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key] => this[key].Value;
+        /// <summary>
+        /// Gets the value correspoinding to the given key.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public TValue this[TKey key] => values[indexInList[key]].Value;
 
         /// <summary>
         /// Extract the smallest element.
@@ -117,14 +122,7 @@ namespace MinMaxHeap
         {
             return indexInList.ContainsKey(key);
         }
-
-        /// <summary>
-        /// Gets the KeyValuePair correspoinding to the given key.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="KeyNotFoundException"></exception>
-        public KeyValuePair<TKey, TValue> this[TKey key] => values[indexInList[key]];
-
+        
         private void BubbleUp(int index)
         {
             int parent = index / 2;
@@ -223,7 +221,8 @@ namespace MinMaxHeap
             return false;
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => values.GetEnumerator();
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => 
+            values.Skip(1).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

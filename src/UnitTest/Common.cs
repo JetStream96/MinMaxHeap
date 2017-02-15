@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace UnitTest
@@ -14,6 +15,11 @@ namespace UnitTest
 
             return (T)fields.Where(x => x.Name == fieldName).First()
                 .GetValue(instance);
+        }
+
+        public static bool SetEquals<T>(this IEnumerable<T> source, IEnumerable<T> other)
+        {
+            return new HashSet<T>(source).SetEquals(other);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace MinMaxHeap
@@ -35,8 +34,12 @@ namespace MinMaxHeap
 
         public IEnumerable<TValue> Values => heap.Values;
 
-        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key] =>
-            ((IReadOnlyDictionary<TKey, TValue>)heap)[key];
+        /// <summary>
+        /// Gets the value correspoinding to the given key.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public TValue this[TKey key] => heap[key];
 
         /// <summary>
         /// Extract the smallest element.
@@ -90,12 +93,5 @@ namespace MinMaxHeap
         {
             return GetEnumerator();
         }
-
-        /// <summary>
-        /// Gets the KeyValuePair correspoinding to the given key.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="KeyNotFoundException"></exception>
-        public KeyValuePair<TKey, TValue> this[TKey key] => heap[key];
     }
 }

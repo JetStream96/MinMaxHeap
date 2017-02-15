@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace MinMaxHeap
@@ -14,8 +13,7 @@ namespace MinMaxHeap
         public MaxHeap(IEnumerable<KeyValuePair<TKey, TValue>> items,
             IComparer<TValue> comparer)
         {
-            heap = new MaxHeap<TKey, TValue, Dictionary<TKey, int>>(
-                items, comparer);
+            heap = new MaxHeap<TKey, TValue, Dictionary<TKey, int>>(items, comparer);
         }
 
         public MaxHeap(IEnumerable<KeyValuePair<TKey, TValue>> items)
@@ -26,8 +24,7 @@ namespace MinMaxHeap
             : this(new KeyValuePair<TKey, TValue>[0], comparer)
         { }
 
-        public MaxHeap() : this(Comparer<TValue>.Default)
-        { }
+        public MaxHeap() : this(Comparer<TValue>.Default){ }
 
         public int Count => heap.Count;
 
@@ -37,8 +34,12 @@ namespace MinMaxHeap
 
         public IEnumerable<TValue> Values => heap.Values;
 
-        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key] =>
-            ((IReadOnlyDictionary<TKey, TValue>)heap)[key];
+        /// <summary>
+        /// Gets the value correspoinding to the given key.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public TValue this[TKey key] => heap[key];
 
         /// <summary>
         /// Extract the largest element.
@@ -86,12 +87,5 @@ namespace MinMaxHeap
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => heap.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        /// <summary>
-        /// Gets the KeyValuePair correspoinding to the given key.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="KeyNotFoundException"></exception>
-        public KeyValuePair<TKey, TValue> this[TKey key] => heap[key];
     }
 }

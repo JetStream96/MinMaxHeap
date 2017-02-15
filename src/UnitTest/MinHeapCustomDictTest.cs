@@ -181,7 +181,7 @@ namespace UnitTest
             heap.Add("item2", 4);
             heap.Add("item3", 8);
 
-            Assert.AreEqual(new KeyValuePair<string, int>("item3", 8), heap["item3"]);
+            Assert.AreEqual(8, heap["item3"]);
 
             Assert.Throws<KeyNotFoundException>(() => heap["item5"].ToString());
         }

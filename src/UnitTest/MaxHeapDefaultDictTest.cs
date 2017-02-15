@@ -1,6 +1,7 @@
 ﻿using MinMaxHeap;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTest
 {
@@ -10,16 +11,7 @@ namespace UnitTest
         [Test]
         public void OrderIsCorrect()
         {
-            var collection = new[]
-            {
-                new KeyValuePair<int, int>(3, 3),
-                new KeyValuePair<int, int>(1, 1),
-                new KeyValuePair<int, int>(9, 9),
-                new KeyValuePair<int, int>(15, 15),
-                new KeyValuePair<int, int>(2, 2)
-            };
-
-            var heap = new MaxHeap<int, int>(collection);
+            var heap = new MaxHeap<int, int>(GetKeyValuePairs());
 
             Assert.AreEqual(5, heap.Count);
 
@@ -28,6 +20,109 @@ namespace UnitTest
             Assert.AreEqual(3, heap.ExtractMax().Value);
             Assert.AreEqual(2, heap.ExtractMax().Value);
             Assert.AreEqual(1, heap.ExtractMax().Value);
-        }        
+        }
+
+        [Test]
+        public void EnumeratorTest()
+        {
+            var items = GetKeyValuePairs();
+            var heap = new MaxHeap<int, int>(items);
+            Assert.IsTrue(heap.SetEquals(items));
+        }
+
+        [Test]
+        public void KeysTest()
+        {
+            var items = new[]
+            {
+                new KeyValuePair<int, int>(3, 0),
+                new KeyValuePair<int, int>(5, 10)
+            };
+
+            var heap = new MaxHeap<int, int>(items);
+            Assert.IsTrue(heap.Keys.SetEquals(new[] { 3, 5 }));
+        }
+
+        [Test]
+        public void ValuesTest()
+        {
+            var items = new[]
+              {
+                new KeyValuePair<int, int>(3, 0),
+                new KeyValuePair<int, int>(5, 10)
+            };
+
+            var heap = new MaxHeap<int, int>(items);
+            Assert.IsTrue(heap.Values.SetEquals(new[] { 0, 10 }));
+        }
+
+        [Test]
+        public void TryGetValueShouldFindKey()
+        {
+            var heap = new MaxHeap<int, int>();
+            heap.Add(3, 5);
+
+            int val;
+            Assert.IsTrue(heap.TryGetValue(3, out val));
+            Assert.AreEqual(5, val);
+        }
+
+        [Test]
+        public void TryGetValueShouldReturnFalse()
+        {
+            var heap = new MaxHeap<int, int>();
+            heap.Add(3, 5);
+
+            int val;
+            Assert.IsFalse(heap.TryGetValue(0, out val));
+        }
+
+        [Test]
+        public void IndexerTest()
+        {
+            var heap = new MaxHeap<int, int>();
+            heap.Add(3, 5);
+
+            Assert.AreEqual(5, heap[3]);
+        }
+
+        [Test]
+        public void IndexerShouldThrow()
+        {
+            var heap = new MaxHeap<int, int>();
+
+            Assert.Throws<KeyNotFoundException>(() =>
+            {
+                var val = heap[3];
+            });
+        }
+
+        [Test]
+        public void ChangeValueTest()
+        {
+            var heap = new MaxHeap<int, int>();
+            heap.Add(3, 5);
+            heap.ChangeValue(3, 10);
+            Assert.AreEqual(10, heap[3]);
+        }
+
+        [Test]
+        public void ChangeValueShouldThrow()
+        {
+            var heap = new MaxHeap<int, int>();
+            Assert.Throws<KeyNotFoundException>(() => heap.ChangeValue(3, 10));
+        }
+
+        private static KeyValuePair<int, int>[] GetKeyValuePairs()
+        {
+            return new[]
+            {
+                new KeyValuePair<int, int>(3, 3),
+                new KeyValuePair<int, int>(1, 1),
+                new KeyValuePair<int, int>(9, 9),
+                new KeyValuePair<int, int>(15, 15),
+                new KeyValuePair<int, int>(2, 2)
+            };
+        }
     }
 }

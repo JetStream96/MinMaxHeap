@@ -1,7 +1,6 @@
 ﻿using MinMaxHeap;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 using static UnitTest.Common;
 
 namespace UnitTest
@@ -108,7 +107,7 @@ namespace UnitTest
             heap.Add(5);
             heap.ExtractMin();
 
-            Assert.IsTrue(new HashSet<int>(heap).SetEquals(new[] { 2, 3, 5, 9, 15 }));
+            Assert.IsTrue(heap.SetEquals(new[] { 2, 3, 5, 9, 15 }));
         }
     }
 }
