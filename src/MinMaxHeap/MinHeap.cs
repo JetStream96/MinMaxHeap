@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace MinMaxHeap
@@ -131,7 +132,7 @@ namespace MinMaxHeap
             values[max] = tmp;
         }
 
-        public IEnumerator<T> GetEnumerator() => values.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => values.Skip(1).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
