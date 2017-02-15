@@ -10,7 +10,7 @@ namespace UnitTest
         [Test]
         public void OrderIsCorrect()
         {
-            var collection = new List<KeyValuePair<int, int>>()
+            var collection = new[]
             {
                 new KeyValuePair<int, int>(3, 3),
                 new KeyValuePair<int, int>(1, 1),
@@ -19,8 +19,7 @@ namespace UnitTest
                 new KeyValuePair<int, int>(2, 2)
             };
 
-            var heap = new MaxHeap<int, int, Dictionary<int, int>>(
-                collection);
+            var heap = new MaxHeap<int, int, Dictionary<int, int>>(collection);
 
             Assert.AreEqual(5, heap.Count);
 

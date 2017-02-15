@@ -1,6 +1,6 @@
-﻿using MinMaxHeap;
+﻿using System.Collections.Generic;
+using MinMaxHeap;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace UnitTest
 {
@@ -10,12 +10,7 @@ namespace UnitTest
         [Test]
         public void OrderIsCorrect()
         {
-            var collection = new List<int>()
-            {
-                3, 1, 9, 15, 2
-            };
-
-            var heap = new MaxHeap<int>(collection);
+            var heap = new MaxHeap<int>(new[] { 3, 1, 9, 15, 2 });
 
             Assert.AreEqual(5, heap.Count);
 
@@ -24,6 +19,18 @@ namespace UnitTest
             Assert.AreEqual(3, heap.ExtractMax());
             Assert.AreEqual(2, heap.ExtractMax());
             Assert.AreEqual(1, heap.ExtractMax());
-        }        
+        }
+
+        [Test]
+        public void EnumeratorTest()
+        {
+            int[] collection = { 3, 1, 9, 15, 2 };
+            var heap = new MaxHeap<int>(collection);
+
+            heap.Add(5);
+            heap.ExtractMax();
+
+            Assert.IsTrue(new HashSet<int>(heap).SetEquals(new[] { 1, 2, 3, 5, 9 }));
+        }
     }
 }

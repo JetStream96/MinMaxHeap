@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace MinMaxHeap
 {
-    public class MinHeap<T>
+    public class MinHeap<T> : IEnumerable<T>
     {
         private List<T> values;
         private IComparer<T> comparer;
@@ -22,16 +23,11 @@ namespace MinMaxHeap
             }
         }
 
-        public MinHeap(IEnumerable<T> items)
-            : this(items, Comparer<T>.Default)
-        { }
+        public MinHeap(IEnumerable<T> items) : this(items, Comparer<T>.Default) { }
 
-        public MinHeap(IComparer<T> comparer)
-            : this(new T[0], comparer)
-        { }
+        public MinHeap(IComparer<T> comparer) : this(new T[0], comparer) { }
 
-        public MinHeap() : this(Comparer<T>.Default)
-        { }
+        public MinHeap() : this(Comparer<T>.Default) { }
 
         public int Count => values.Count - 1;
 
@@ -134,5 +130,9 @@ namespace MinMaxHeap
             values[index] = values[max];
             values[max] = tmp;
         }
+
+        public IEnumerator<T> GetEnumerator() => values.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

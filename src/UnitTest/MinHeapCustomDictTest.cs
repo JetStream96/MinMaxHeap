@@ -12,7 +12,7 @@ namespace UnitTest
         [Test]
         public void AddCollectionCorrectly()
         {
-            var collection = new List<KeyValuePair<int, int>>()
+            var collection = new[]
             {
                 new KeyValuePair<int, int>(3, 3),
                 new KeyValuePair<int, int>(1, 1),
@@ -25,8 +25,7 @@ namespace UnitTest
                 new KeyValuePair<int, int>(0, 0),
             };
 
-            var heap = new MinHeap<int, int, Dictionary<int, int>>(
-                collection);
+            var heap = new MinHeap<int, int, Dictionary<int, int>>(collection);
 
             Assert.AreEqual(9, heap.Count);
             VerifyHeapProperty(heap);
@@ -35,7 +34,7 @@ namespace UnitTest
         [Test]
         public void AddCollectionAndCustomComparerCorrectOrdering()
         {
-            var collection = new List<KeyValuePair<int, int>>()
+            var collection = new[]
             {
                 new KeyValuePair<int, int>(3, 3),
                 new KeyValuePair<int, int>(1, 1),
@@ -89,18 +88,16 @@ namespace UnitTest
         [Test]
         public void AddSameKeyThrowException()
         {
-            var heap = new MinHeap<string, double,
-                Dictionary<string, int>>();
+            var heap = new MinHeap<string, double, Dictionary<string, int>>();
 
             heap.Add("item1", 3.0);
-            Assert.Throws<ArgumentException>(() =>
-                heap.Add("item1", 4.0));
+            Assert.Throws<ArgumentException>(() => heap.Add("item1", 4.0));
         }
 
         [Test]
         public void ExtractTest()
         {
-            var collection = new List<KeyValuePair<int, int>>()
+            var collection = new[]
             {
                 new KeyValuePair<int, int>(3, 3),
                 new KeyValuePair<int, int>(1, 1),
@@ -109,8 +106,7 @@ namespace UnitTest
                 new KeyValuePair<int, int>(2, 2)
             };
 
-            var heap = new MinHeap<int, int, Dictionary<int, int>>(
-                collection);
+            var heap = new MinHeap<int, int, Dictionary<int, int>>(collection);
 
             Assert.AreEqual(5, heap.Count);
 
@@ -124,18 +120,14 @@ namespace UnitTest
         [Test]
         public void ChangeValueKeyDoesNotExist()
         {
-            var heap = new MinHeap<string, int,
-                Dictionary<string, int>>();
-
-            Assert.Throws<KeyNotFoundException>(() =>
-                heap.ChangeValue("item1", 20));
+            var heap = new MinHeap<string, int, Dictionary<string, int>>();
+            Assert.Throws<KeyNotFoundException>(() => heap.ChangeValue("item1", 20));
         }
 
         [Test]
         public void ChangeValueTest()
         {
-            var heap = new MinHeap<string, int,
-                Dictionary<string, int>>();
+            var heap = new MinHeap<string, int, Dictionary<string, int>>();
 
             heap.Add("item1", 3);
             heap.Add("item2", 4);
@@ -158,8 +150,7 @@ namespace UnitTest
         [Test]
         public void KeyRemovedAfterExtractMin()
         {
-            var heap = new MinHeap<string, int,
-               Dictionary<string, int>>();
+            var heap = new MinHeap<string, int, Dictionary<string, int>>();
 
             heap.Add("item1", 3);
             heap.ExtractMin();
@@ -170,8 +161,7 @@ namespace UnitTest
         [Test]
         public void ContainsKeyTest()
         {
-            var heap = new MinHeap<string, int,
-                Dictionary<string, int>>();
+            var heap = new MinHeap<string, int, Dictionary<string, int>>();
 
             heap.Add("item1", 3);
             heap.Add("item2", 4);
@@ -179,25 +169,21 @@ namespace UnitTest
 
             Assert.IsTrue(heap.ContainsKey("item2"));
             Assert.IsFalse(heap.ContainsKey("item4"));
-            Assert.Throws<ArgumentNullException>(() =>
-            heap.ContainsKey(null));
+            Assert.Throws<ArgumentNullException>(() => heap.ContainsKey(null));
         }
 
         [Test]
         public void IndexerTest()
         {
-            var heap = new MinHeap<string, int,
-                Dictionary<string, int>>();
+            var heap = new MinHeap<string, int, Dictionary<string, int>>();
 
             heap.Add("item1", 3);
             heap.Add("item2", 4);
             heap.Add("item3", 8);
 
-            Assert.AreEqual(new KeyValuePair<string, int>("item3", 8),
-                heap["item3"]);
+            Assert.AreEqual(new KeyValuePair<string, int>("item3", 8), heap["item3"]);
 
-            Assert.Throws<KeyNotFoundException>(() =>
-            heap["item5"].ToString());
+            Assert.Throws<KeyNotFoundException>(() => heap["item5"].ToString());
         }
         
         // Used for testing
@@ -212,14 +198,12 @@ namespace UnitTest
             {
                 if (i * 2 < list.Count)
                 {
-                    Assert.IsTrue(
-                        comparer.Compare(list[i].Value, list[i * 2].Value) <= 0);
+                    Assert.IsTrue(comparer.Compare(list[i].Value, list[i * 2].Value) <= 0);
                 }
 
                 if (i * 2 + 1 < list.Count)
                 {
-                    Assert.IsTrue(
-                        comparer.Compare(list[i].Value, list[i * 2 + 1].Value) <= 0);
+                    Assert.IsTrue(comparer.Compare(list[i].Value, list[i * 2 + 1].Value) <= 0);
                 }
             }
         }

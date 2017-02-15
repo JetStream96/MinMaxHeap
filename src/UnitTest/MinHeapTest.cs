@@ -1,6 +1,7 @@
 ﻿using MinMaxHeap;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using static UnitTest.Common;
 
 namespace UnitTest
@@ -11,10 +12,7 @@ namespace UnitTest
         [Test]
         public void AddCollectionCorrectly()
         {
-            var collection = new List<int>()
-            {
-                3, 1, 9, 15, 2
-            };
+            int[] collection = { 3, 1, 9, 15, 2 };
 
             var heap = new MinHeap<int>(collection);
 
@@ -25,10 +23,7 @@ namespace UnitTest
         [Test]
         public void AddCollectionAndCustomComparerCorrectOrdering()
         {
-            var collection = new List<int>()
-            {
-                3, 1, 9, 15, 2
-            };
+            int[] collection = { 3, 1, 9, 15, 2 };
 
             var heap = new MinHeap<int>(
                 collection,
@@ -41,8 +36,7 @@ namespace UnitTest
         [Test]
         public void CustomComparerCorrectOrdering()
         {
-            var heap = new MinHeap<int>(
-                Comparer<int>.Create((x, y) => -x.CompareTo(y)));
+            var heap = new MinHeap<int>(Comparer<int>.Create((x, y) => -x.CompareTo(y)));
 
             heap.Add(3);
             heap.Add(1);
@@ -57,8 +51,7 @@ namespace UnitTest
         [Test]
         public void CountTest()
         {
-            var heap = new MinHeap<int>(
-                Comparer<int>.Create((x, y) => -x.CompareTo(y)));
+            var heap = new MinHeap<int>(Comparer<int>.Create((x, y) => -x.CompareTo(y)));
 
             Assert.AreEqual(0, heap.Count);
 
@@ -75,11 +68,7 @@ namespace UnitTest
         [Test]
         public void ExtractMinTest()
         {
-            var collection = new List<int>()
-            {
-                3, 1, 9, 15, 2
-            };
-
+            int[] collection = { 3, 1, 9, 15, 2 };
             var heap = new MinHeap<int>(collection);
 
             Assert.AreEqual(5, heap.Count);
@@ -91,8 +80,7 @@ namespace UnitTest
             Assert.AreEqual(15, heap.ExtractMin());
         }
 
-        private void VerifyHeapProperty<T>(
-            MinHeap<T> heap)
+        private void VerifyHeapProperty<T>(MinHeap<T> heap)
         {
             var list = GetField<List<T>>(heap, "values");
             var comparer = GetField<IComparer<T>>(heap, "comparer");
@@ -101,16 +89,26 @@ namespace UnitTest
             {
                 if (i * 2 < list.Count)
                 {
-                    Assert.IsTrue(
-                        comparer.Compare(list[i], list[i * 2]) <= 0);
+                    Assert.IsTrue(comparer.Compare(list[i], list[i * 2]) <= 0);
                 }
 
                 if (i * 2 + 1 < list.Count)
                 {
-                    Assert.IsTrue(
-                        comparer.Compare(list[i], list[i * 2 + 1]) <= 0);
+                    Assert.IsTrue(comparer.Compare(list[i], list[i * 2 + 1]) <= 0);
                 }
             }
+        }
+
+        [Test]
+        public void EnumeratorTest()
+        {
+            int[] collection = { 3, 1, 9, 15, 2 };
+            var heap = new MinHeap<int>(collection);
+
+            heap.Add(5);
+            heap.ExtractMin();
+
+            Assert.IsTrue(new HashSet<int>(heap).SetEquals(new[] { 2, 3, 5, 9, 15 }));
         }
     }
 }
