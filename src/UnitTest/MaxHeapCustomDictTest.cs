@@ -8,6 +8,11 @@ namespace UnitTest
     public class MaxHeapCustomDictTest
     {
         [Test]
+        public void CtorTest1()
+        {
+            var heap = new MaxHeap<string, int, Dictionary<string, int>>();
+        }
+        [Test]
         public void OrderIsCorrect()
         {
             var collection = new[]

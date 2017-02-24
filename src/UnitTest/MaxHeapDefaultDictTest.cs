@@ -105,6 +105,27 @@ namespace UnitTest
             heap.ChangeValue(3, 10);
             Assert.AreEqual(10, heap[3]);
         }
+        
+        [Test]
+        public void ContainsKeyTest()
+        {
+            var heap = new MaxHeap<int, int>();
+            heap.Add(42, -1);
+            Assert.IsTrue(heap.ContainsKey(42));
+            Assert.IsFalse(heap.ContainsKey(-1));
+        }
+
+        [Test]
+        public void GetMaxTest()
+        {
+            var heap = new MaxHeap<int, int>();
+            heap.Add(42, -1);
+            heap.Add(5, 6);
+            var max = heap.Max;
+
+            Assert.AreEqual(5, max.Key);
+            Assert.AreEqual(6, max.Value);
+        }
 
         [Test]
         public void ChangeValueShouldThrow()
