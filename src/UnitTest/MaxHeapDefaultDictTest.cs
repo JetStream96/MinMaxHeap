@@ -62,8 +62,7 @@ namespace UnitTest
             var heap = new MaxHeap<int, int>();
             heap.Add(3, 5);
 
-            int val;
-            Assert.IsTrue(heap.TryGetValue(3, out val));
+            Assert.IsTrue(heap.TryGetValue(3, out int val));
             Assert.AreEqual(5, val);
         }
 

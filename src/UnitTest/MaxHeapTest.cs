@@ -1,4 +1,5 @@
-﻿using MinMaxHeap;
+﻿using System.Collections.Generic;
+using MinMaxHeap;
 using NUnit.Framework;
 
 namespace UnitTest
@@ -30,6 +31,26 @@ namespace UnitTest
             heap.ExtractMax();
 
             Assert.IsTrue(heap.SetEquals(new[] { 1, 2, 3, 5, 9 }));
+        }
+
+        [Test]
+        public void Ctor1Test()
+        {
+            var heap = new MaxHeap<int>();
+            heap.Add(3);
+            heap.Add(10);
+
+            Assert.AreEqual(10, heap.Max);
+        }
+
+        [Test]
+        public void Ctor2Test()
+        {
+            var heap = new MaxHeap<int>(Comparer<int>.Create((x, y) => x * x - y * y));
+            heap.Add(3);
+            heap.Add(-4);
+
+            Assert.AreEqual(-4, heap.Max);
         }
     }
 }
